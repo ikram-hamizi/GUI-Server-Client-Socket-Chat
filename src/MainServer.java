@@ -20,11 +20,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
-public class Server {
+public class MainServer {
 
 	int port, client_counter;
 	private ExecutorService processes; //Executor: helps setting the number of processes to be run.
-	private ServerSocket serverSocket;
+	private ServerSocket mainServerSocket;
 	private Socket clientSocket;
 	
 	private ArrayList <Socket> connected_clients;
@@ -35,29 +35,29 @@ public class Server {
 		return connected_clients;
 	}
 	
-	public Server(int port)
+	public MainServer(int port)
 	{
 		this.port = port;
 		processes = Executors.newFixedThreadPool(100); //Allows 100 processes (100 chatters).
 		connected_clients = new ArrayList <Socket>(10); //Dynamic
 	}
 	
-	public void serverBegin() throws IOException 
+	public void serverBegin() throws IOException
 	{
-		serverSocket = new ServerSocket(port);
+		mainServerSocket = new ServerSocket(port);
 		System.out.println("*** Server started ***");
 		while(true)
 		{
-			clientSocket = serverSocket.accept();
+			clientSocket = mainServerSocket.accept();
 			client_counter++;
 			connected_clients.add(clientSocket);
 			
-			ServerThread st = new ServerThread(this, clientSocket, client_counter);
+			ChatThread st = new ChatThread(this, clientSocket, client_counter);
 			processes.execute(st);
 		}
 	}
     public static void main(String[] args) throws IOException {
-    	Server server_object = new Server(8001);
+    	MainServer server_object = new MainServer(8001);
     	server_object.serverBegin();
     }
 }
