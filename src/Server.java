@@ -8,8 +8,7 @@
  * Description: 
  * ***************************************************************************************
  *
- * in: String (STDIN) - English Adjective from user
- * out: Synonym of the adjective
+ * in: String (STDIN)
  *
  * /**************************************************************************************** */
 import java.io.IOException;
